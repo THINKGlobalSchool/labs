@@ -10,5 +10,19 @@
  *
  */
 
-system_message(elgg_echo('coolfeature:success:youdidit'));
+// Get inputs
+$show_message = get_input('show_message', false);
+$action_json = get_input('action_json', false);
+
+if ($show_message) {
+	system_message(elgg_echo('coolfeature:success:message'));
+} else if ($action_json) {
+	echo json_encode(array(
+		'name' => 'Will Riker',
+		'rank' => 'Commander',
+		'instrument' => 'Trombone',
+		'photo' => elgg_get_site_url() . 'mod/labs/graphics/riker.jpg'
+	));
+}
+
 forward();

@@ -51,6 +51,9 @@ function labs_init() {
 	$action_base = elgg_get_plugins_path() . "labs/actions/coolfeature";
 	elgg_register_action('coolfeature/coolaction', "$action_base/coolaction.php");
 
+	// Register example ajax view
+	elgg_register_ajax_view('coolfeature/user');
+
 	/** END EXAMPLES **/
 }
 

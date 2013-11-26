@@ -14,9 +14,12 @@ $english = array(
 	'labs' => 'Labs',
 
 	// Feature strings
-	'coolfeature:label:doacoolthing' => 'Do something cool',
+	'coolfeature:label:showmessage' => 'Show a message',
+	'coolfeature:label:actionjson' => 'Get JSON via Action',
+	'coolfeature:label:viewdefault' => 'Get default view',
+	'coolfeature:label:viewjson' => 'Get JSON via View',
 
-	'coolfeature:success:youdidit' => 'You did something really really cool!',
+	'coolfeature:success:message' => 'Yesterday I did not know how to eat gagh. This should be interesting.',
 );
 
 add_translation('en', $english);

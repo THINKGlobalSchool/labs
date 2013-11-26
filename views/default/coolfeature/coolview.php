@@ -10,12 +10,14 @@
  */
 
 $content = <<<HTML
-	<div class='clearfix'></div>
 	<div>
 		This is a pretty cool feature!
 	</div>
 	<div id='coolfeature-container'>
 		<!-- Will contain some cool content -->
+	</div>
+	<div id='coolfeature-json-output' class='clearfix'>
+		<!-- Will contain some more cool content -->
 	</div>
 HTML;
 

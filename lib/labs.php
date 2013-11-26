@@ -13,8 +13,9 @@
 // Example content handler
 function coolfeature_get_page_content() {
 	$params['title'] = 'Cool feature!';
-	$params['content'] = elgg_view_form('coolfeature/coolaction');
-	$params['content'] .= elgg_view('coolfeature/coolview');
-	$params['layout'] = 'one_column';
+	$params['content'] = elgg_view('coolfeature/coolview');
+	$params['content'] .= elgg_view_form('coolfeature/coolaction');
+	$params['filter'] = false;
+	$params['layout'] = 'content';
 	return $params;
 }
