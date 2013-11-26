@@ -11,12 +11,16 @@
  * See README for naming conventions
  */
 
+// Main init
 elgg_register_event_handler('init', 'system', 'labs_init');
 
 // Requirejs lab
-elgg_register_event_handler('init', 'system', 'requirejs_views_boot', 9999);
+elgg_register_event_handler('init', 'system', 'requirejs_init', 9999);
 
-// Init labs
+// Coolfeature (example) init
+elgg_register_event_handler('init', 'system', 'coolfeature_init');
+
+// Init labs plugin
 function labs_init() {
 	// Register library
 	elgg_register_library('elgg:labs', elgg_get_plugins_path() . 'labs/lib/labs.php');
@@ -33,8 +37,10 @@ function labs_init() {
 
 	// Register main page handler
 	elgg_register_page_handler('labs', 'labs_page_handler');
+}
 
-	/** EXAMPLES (Labs should provide their own JS/CSS libs) **/
+// Coolfeature (example init)
+function coolfeature_init() {
 	// Register library
 	elgg_register_library('elgg:coolfeature', elgg_get_plugins_path() . 'labs/lib/coolfeature/lib.php');
 	elgg_load_library('elgg:coolfeature');
@@ -58,13 +64,14 @@ function labs_init() {
 	$action_base = elgg_get_plugins_path() . "labs/actions/coolfeature";
 	elgg_register_action('coolfeature/coolaction', "$action_base/coolaction.php");
 
+	// Register page handler for coolfeature
+	elgg_register_plugin_hook_handler('coolfeature', 'labs', 'coolfeature_page_handler');
+
 	// Register example ajax view
 	elgg_register_ajax_view('coolfeature/user');
-
-	/** END EXAMPLES **/
 }
 
-// System boot handler
+// Requirejs init handler
 function requirejs_views_boot() {
 	// Get require.js working
 	elgg_register_simplecache_view('js/requirejs/require_config');
@@ -92,26 +99,48 @@ function labs_page_handler($page) {
 	// Name of the 'lab', ie: coolfeature
 	$lab = $page[0];
 
-	// Handle xhr requests different, if needed
+	// If we have a lab, trigger its hook handler
+	if ($lab) {
+		array_shift($page);
+		$content = elgg_trigger_plugin_hook($lab, 'labs', $page, null);
+	} 
+
+	// If we've got content, show it. Forward off otherwise..
+	if ($content) {
+		echo $content;
+	} else {
+		forward();
+	}
+
+	return TRUE;
+}
+
+/**
+ * Coolfeature example page handler
+ *
+ * @param string $hook    The hook name
+ * @param string $type    Hook type
+ * @param string $content This handlers content
+ * @param array  $page    Page handler style pages array
+ */
+function coolfeature_page_handler($hook, $type, $content, $page) {
+	$page_type = $page[0];
+
+	// Handle xhr requests
 	if (elgg_is_xhr()) {
-		switch ($lab) {
-		case 'coolfeature':
-			// spit out some json? sure.
-			echo json_encode(array(
-				'name' => 'cool thing',
-				'desc' => 'all about my cool thing'
-			));
-			break;
+		switch ($page_type) {
+			default:
+				// spit out some json? sure.
+				return json_encode(array(
+					'name' => 'cool feature',
+					'desc' => 'cool description'
+				));
+				break;
 		}
 	} else { // Not xhr, build content
-
-		// Load up main plugin JS
-		elgg_load_js('elgg.labs');
-
-		// Handler each 'lab'
-		switch ($lab) {
-			// coolfeature!
-			case 'coolfeature':
+		switch ($page_type) {
+			// coolfeature default
+			default:
 				// Load feature css/js
 				elgg_load_js('elgg.coolfeature.coolvendor');
 				elgg_load_js('elgg.coolfeature');
@@ -120,13 +149,9 @@ function labs_page_handler($page) {
 				// Call lib function to build up content
 				$params = coolfeature_get_page_content();
 				break;
-			default:
-				forward();
 		}
 
 		$body = elgg_view_layout($params['layout'], $params);
-		echo elgg_view_page($params['title'], $body);
+		return elgg_view_page($params['title'], $body);
 	}
-
-	return TRUE;
 }
