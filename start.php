@@ -7,11 +7,14 @@
  * @author Jeff Tilson
  * @copyright THINK Global School 2010 - 2013
  * @link http://www.thinkglobalschool.com/
- *
+ * 
+ * See README for naming conventions
  */
 
 elgg_register_event_handler('init', 'system', 'labs_init');
-elgg_register_event_handler('init', 'system', 'labs_views_boot', 9999);
+
+// Requirejs lab
+elgg_register_event_handler('init', 'system', 'requirejs_views_boot', 9999);
 
 // Init labs
 function labs_init() {
@@ -32,6 +35,9 @@ function labs_init() {
 	elgg_register_page_handler('labs', 'labs_page_handler');
 
 	/** EXAMPLES (Labs should provide their own JS/CSS libs) **/
+	// Register library
+	elgg_register_library('elgg:coolfeature', elgg_get_plugins_path() . 'labs/lib/coolfeature/lib.php');
+	elgg_load_library('elgg:coolfeature');
 
 	// Example feature JS lib init
 	$js = elgg_get_simplecache_url('js', 'coolfeature/coolfeature.js');
@@ -59,7 +65,7 @@ function labs_init() {
 }
 
 // System boot handler
-function labs_views_boot() {
+function requirejs_views_boot() {
 	// Get require.js working
 	elgg_register_simplecache_view('js/requirejs/require_config');
 	elgg_register_simplecache_view('js/requirejs/text.js');

@@ -8,14 +8,6 @@
  * @copyright THINK Global School 2010 - 2013
  * @link http://www.thinkglobalschool.com/
  *
+ * This file should only contain helpers for the labs plugin itself.
+ * Individual labs should have their own seperate folder.
  */
-
-// Example content handler
-function coolfeature_get_page_content() {
-	$params['title'] = 'Cool feature!';
-	$params['content'] = elgg_view('coolfeature/coolview');
-	$params['content'] .= elgg_view_form('coolfeature/coolaction');
-	$params['filter'] = false;
-	$params['layout'] = 'content';
-	return $params;
-}
