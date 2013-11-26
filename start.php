@@ -11,6 +11,7 @@
  */
 
 elgg_register_event_handler('init', 'system', 'labs_init');
+elgg_register_event_handler('init', 'system', 'labs_views_boot', 9999);
 
 // Init labs
 function labs_init() {
@@ -32,15 +33,15 @@ function labs_init() {
 
 	/** EXAMPLES (Labs should provide their own JS/CSS libs) **/
 
-	// Example vendor JS init
-	$js = elgg_get_simplecache_url('js', 'coolvendor.js');
-	elgg_register_simplecache_view('js/coolvendor.js');
-	elgg_register_js('elgg.coolvendor', $js);
-
 	// Example feature JS lib init
 	$js = elgg_get_simplecache_url('js', 'coolfeature/coolfeature.js');
 	elgg_register_simplecache_view('js/coolfeature/coolfeature.js');
 	elgg_register_js('elgg.coolfeature', $js);
+
+	// Example vendor JS init
+	$js = elgg_get_simplecache_url('js', 'coolfeature/coolvendor.js');
+	elgg_register_simplecache_view('js/coolfeature/coolvendor.js');
+	elgg_register_js('elgg.coolfeature.coolvendor', $js);
 
 	// Example feature CSS init
 	$css = elgg_get_simplecache_url('css', 'coolfeature/coolfeature.css');
@@ -55,6 +56,19 @@ function labs_init() {
 	elgg_register_ajax_view('coolfeature/user');
 
 	/** END EXAMPLES **/
+}
+
+// System boot handler
+function labs_views_boot() {
+	// Get require.js working
+	elgg_register_simplecache_view('js/requirejs/require_config');
+	elgg_register_simplecache_view('js/requirejs/text.js');
+
+	elgg_register_js('elgg.requirejs.require_config', elgg_get_simplecache_url('js', 'requirejs/require_config'), 'head');
+	elgg_register_js('elgg.requirejs.require', '/mod/labs/vendors/requirejs/require-2.1.4.min.js', 'head');
+
+	elgg_load_js('elgg.requirejs.require_config');
+	elgg_load_js('elgg.requirejs.require');
 }
 
 /**
@@ -93,7 +107,7 @@ function labs_page_handler($page) {
 			// coolfeature!
 			case 'coolfeature':
 				// Load feature css/js
-				elgg_load_js('elgg.coolvendor');
+				elgg_load_js('elgg.coolfeature.coolvendor');
 				elgg_load_js('elgg.coolfeature');
 				elgg_load_css('elgg.coolfeature');
 

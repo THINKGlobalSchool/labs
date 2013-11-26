@@ -10,6 +10,6 @@
  */
 
 $js_path = elgg_get_config('path');
-$js_path = "{$js_path}mod/labs/vendors/coolvendor.js";
+$js_path = "{$js_path}mod/labs/vendors/coolfeature/coolvendor.js";
 
 include $js_path;
