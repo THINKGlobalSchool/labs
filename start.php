@@ -15,7 +15,10 @@
 elgg_register_event_handler('init', 'system', 'labs_init');
 
 // Requirejs lab
-elgg_register_event_handler('init', 'system', 'requirejs_init', 9999);
+elgg_register_event_handler('init', 'system', 'requirejs_init');
+
+// Backbone lab init
+elgg_register_event_handler('init', 'system', 'backbone_init', 501); // Dependant on requirejs lab
 
 // Coolfeature (example) init
 elgg_register_event_handler('init', 'system', 'coolfeature_init');
@@ -37,6 +40,15 @@ function labs_init() {
 
 	// Register main page handler
 	elgg_register_page_handler('labs', 'labs_page_handler');
+
+	elgg_register_menu_item('topbar', array(
+		'name' => 'labs',
+		'href' => '#',
+		'text' => "<span class='labs-topbar-icon'></span>",
+		'section' => 'alt',
+		'priority' => 600,
+		'title' => elgg_echo('labs'),
+	));
 }
 
 // Coolfeature (example init)
@@ -107,6 +119,28 @@ function requirejs_init() {
 
 	elgg_load_js('elgg.requirejs.require_config');
 	elgg_load_js('elgg.requirejs.require');
+}
+
+// Backbone init handler
+function backbone_init() {
+	// Register underscore with requirejs (and elgg)
+	require_register_js('underscore', array(
+		'src' => elgg_get_site_url() . 'mod/labs/vendors/backbone/underscore-min.js',
+		'location' => 'footer',
+		'exports' => '_',
+	));
+
+	// Register backbone with requirejs (and elgg)
+	require_register_js('backbone', array(
+		'src' => elgg_get_site_url() . 'mod/labs/vendors/backbone/backbone-min.js',
+		'location' => 'footer',
+		'deps' => array('jquery'),
+		'exports' => 'Backbone',
+	));
+
+	// Use the following to load underscore/backbone modules on page load
+	// elgg_require_js('underscore');
+	// elgg_require_js('backbone');
 }
 
 /**

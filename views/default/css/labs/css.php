@@ -11,3 +11,13 @@
  */
 ?>
 /* General plugin CSS here **/
+.labs-topbar-icon {
+	background: url('<?php echo elgg_get_site_url(); ?>mod/labs/graphics/lab_icon.png') no-repeat;
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+}
+
+.labs-topbar-icon:hover {
+	background-position: 0 -16px;
+}
