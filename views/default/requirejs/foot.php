@@ -11,7 +11,6 @@
 
 $deps = require_get_depenencies();
 ?>
-<a href='#' id='dothing'>Do Thing</a>
 <script>
 require(<?php echo json_encode($deps); ?>);
 </script>
