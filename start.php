@@ -72,11 +72,36 @@ function coolfeature_init() {
 }
 
 // Requirejs init handler
-function requirejs_views_boot() {
-	// Get require.js working
+function requirejs_init() {
+	// Register new jquery (for AMD)
+	elgg_unregister_js('jquery');
+	elgg_register_js('jquery', elgg_get_site_url() . 'mod/labs/vendors/requirejs/jquery-1.7.min.js', 'head');
+	elgg_load_js('jquery');
+
+	// Register library
+	elgg_register_library('elgg:requirejs', elgg_get_plugins_path() . 'labs/lib/requirejs/require.php');
+	elgg_load_library('elgg:requirejs');
+
+	// Register requiresjs test lib
+	$js = elgg_get_simplecache_url('js', 'requirejs/requirejs.js');
+	elgg_register_simplecache_view('js/requirejs/requirejs.js');
+	elgg_register_js('elgg.requirejs', $js);
+	elgg_load_js('elgg.requirejs');
+
+	// Use this to manually include test module on page load
+	//elgg_require_js('requirejs/test');
+
+	// Extend js page handler
+	elgg_register_page_handler('requirejs', 'requirejs_page_handler');
+
+	// Extend footer
+	elgg_extend_view('page/elements/foot', 'requirejs/foot');
+
+	// Register simplecache views
 	elgg_register_simplecache_view('js/requirejs/require_config');
 	elgg_register_simplecache_view('js/requirejs/text.js');
 
+	// Register require JS
 	elgg_register_js('elgg.requirejs.require_config', elgg_get_simplecache_url('js', 'requirejs/require_config'), 'head');
 	elgg_register_js('elgg.requirejs.require', '/mod/labs/vendors/requirejs/require-2.1.4.min.js', 'head');
 
@@ -154,4 +179,26 @@ function coolfeature_page_handler($hook, $type, $content, $page) {
 		$body = elgg_view_layout($params['layout'], $params);
 		return elgg_view_page($params['title'], $body);
 	}
+}
+
+/**
+ * Requirejs page handler (serves JS files as required)
+ *
+ * @param array $page The pages array
+ * @return bool
+ */
+function requirejs_page_handler($page) {
+	$lastcache = array_shift($page);
+	$viewtype = array_shift($page);
+	$type = array_shift($page);
+
+	$path = implode('/', $page);
+
+	header("Content-type: text/javascript");
+
+	$full_path = elgg_get_plugins_path() . "labs/views/{$viewtype}/{$type}/" . $path;
+	include_once($full_path);
+
+	return TRUE;
+
 }

@@ -10,48 +10,24 @@
  *
  */
 
-// Need to build simplecache/js root url
-$lastcache = (int)elgg_get_config('lastcache');
-$viewtype = elgg_get_viewtype();
-
+// Build baseUrl
 if (elgg_is_simplecache_enabled()) {
-	$sc_root = elgg_normalize_url("/cache/js/{$viewtype}/");
+	// stored in datalist as 'simplecache_lastupdate'
+	$lastcache = (int)elgg_get_config('lastcache');
 } else {
-	$sc_root = elgg_get_site_url() . '/';
+	$lastcache = 0;
 }
 
-// Create new config object
-$obj = new Elgg_Amd_Config();
-$obj->setBaseUrl($sc_root . "js/");
+$viewtype = elgg_get_viewtype();
+$sc_root = elgg_get_site_url() . "requirejs/{$lastcache}/{$viewtype}/js/";
 
-// Get externals map from config
-$externals_map = elgg_get_config('externals_map');
+$amd_config = array(
+	'baseUrl' => $sc_root,
+	// 'paths' => array()
+);
 
-// Filter out un-loaded items
-$callback = "return \$v->loaded == true;";
-$items = array_filter($externals_map['js'], create_function('$v', $callback));
-
-// Set key/value: Name => URL
-if ($items) {
-	array_walk($items, create_function('&$v,$k', '$v = $v->url;'));
-} else {
-	$items = array();
-}
-
-// Register AMD for each external if possible
-foreach ($items as $name => $item) {
-	if (is_array($item)) {
-		$obj->setShim($name, $item);
-		$obj->setPath($name, elgg_normalize_url($url));
-	}
-}
-
-$amdConfig = $obj->getConfig();
-
-// Deps are loaded in page/elements/foot with require([...])
-unset($amdConfig['deps']);
 ?>
 // <script>
 if (typeof require == "undefined") {
-	var require = <?php echo json_encode($amdConfig); ?>;
+	var require = <?php echo json_encode($amd_config); ?>;
 }
