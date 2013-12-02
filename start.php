@@ -12,7 +12,7 @@
  */
 
 // Main init
-elgg_register_event_handler('init', 'system', 'labs_init');
+elgg_register_event_handler('init', 'system', 'labs_init', 999);
 
 // Requirejs lab
 elgg_register_event_handler('init', 'system', 'requirejs_init');
@@ -22,6 +22,9 @@ elgg_register_event_handler('init', 'system', 'backbone_init', 501); // Dependan
 
 // Coolfeature (example) init
 elgg_register_event_handler('init', 'system', 'coolfeature_init');
+
+// Todo (backbone example) init 
+elgg_register_event_handler('init', 'system', 'todobackbone_init');
 
 // Init labs plugin
 function labs_init() {
@@ -41,14 +44,23 @@ function labs_init() {
 	// Register main page handler
 	elgg_register_page_handler('labs', 'labs_page_handler');
 
-	elgg_register_menu_item('topbar', array(
-		'name' => 'labs',
-		'href' => '#',
-		'text' => "<span class='labs-topbar-icon'></span>",
-		'section' => 'alt',
-		'priority' => 600,
-		'title' => elgg_echo('labs'),
-	));
+	// Register topbar item
+	if (elgg_is_logged_in()) {
+		elgg_register_menu_item('topbar', array(
+			'name' => 'labs',
+			'href' => '#',
+			'text' => "<span class='labs-topbar-icon'></span>",
+			'section' => 'alt',
+			'priority' => 600,
+			'title' => elgg_echo('labs'),
+		));
+	}
+	
+	// Whitelist other ajax views
+	elgg_register_ajax_view('labs/lab_list');
+
+	// Whitelist template directory
+	backbone_whitelist_templates(elgg_get_plugins_path() . 'labs/views/default/labs/templates/');
 }
 
 // Coolfeature (example init)
@@ -81,6 +93,14 @@ function coolfeature_init() {
 
 	// Register example ajax view
 	elgg_register_ajax_view('coolfeature/user');
+
+	// Register labs menu item
+	elgg_register_menu_item('labs', array(
+		'name' => 'coolfeature',
+		'href' => 'labs/coolfeature',
+		'text' => "Cool Feature",
+		'desc' => 'Just a test feature'
+	));
 }
 
 // Requirejs init handler
@@ -94,7 +114,7 @@ function requirejs_init() {
 	elgg_register_library('elgg:requirejs', elgg_get_plugins_path() . 'labs/lib/requirejs/require.php');
 	elgg_load_library('elgg:requirejs');
 
-	// Register requiresjs test lib
+	// Register requirejs test lib
 	$js = elgg_get_simplecache_url('js', 'requirejs/requirejs.js');
 	elgg_register_simplecache_view('js/requirejs/requirejs.js');
 	elgg_register_js('elgg.requirejs', $js);
@@ -103,7 +123,7 @@ function requirejs_init() {
 	// Use this to manually include test module on page load
 	//elgg_require_js('requirejs/test');
 
-	// Extend js page handler
+	// Register js page handler
 	elgg_register_page_handler('requirejs', 'requirejs_page_handler');
 
 	// Extend footer
@@ -123,6 +143,10 @@ function requirejs_init() {
 
 // Backbone init handler
 function backbone_init() {
+	// Register library
+	elgg_register_library('elgg:backbone', elgg_get_plugins_path() . 'labs/lib/backbone/backbone.php');
+	elgg_load_library('elgg:backbone');
+
 	// Register underscore with requirejs (and elgg)
 	require_register_js('underscore', array(
 		'src' => elgg_get_site_url() . 'mod/labs/vendors/backbone/underscore-min.js',
@@ -138,9 +162,39 @@ function backbone_init() {
 		'exports' => 'Backbone',
 	));
 
+	// Register localstorage for backbone
+	require_register_js('backbone-localstorage', array(
+		'src' => elgg_get_site_url() . 'mod/labs/vendors/backbone/backbone-localstorage-min.js',
+		'location' => 'footer',
+		'deps' => array('backbone'),
+	));
+
 	// Use the following to load underscore/backbone modules on page load
 	// elgg_require_js('underscore');
 	// elgg_require_js('backbone');
+}
+
+// Backbone todo example app init
+function todobackbone_init() {
+	// // Register Todo JS lib
+	$js = elgg_get_simplecache_url('js', 'todobackbone/todo.js');
+	elgg_register_simplecache_view('js/todobackbone/todo.js');
+	elgg_register_js('elgg.labs.todobackbone', $js);
+	elgg_load_js('elgg.labs.todobackbone');
+
+	// Extend Main CSS
+	elgg_extend_view('css/elgg', 'css/todobackbone/css');
+
+	// Add a menu item
+	elgg_register_menu_item('labs', array(
+		'name' => 'backbonetodo',
+		'href' => '#/todos',
+		'text' => "Backbone Todos",
+		'desc' => 'The obligatory todo test app!',
+		'class' => 'todo-test-item'
+	));
+
+	backbone_whitelist_templates(elgg_get_plugins_path() . 'labs/views/default/todobackbone/templates/');
 }
 
 /**
@@ -231,6 +285,7 @@ function requirejs_page_handler($page) {
 	header("Content-type: text/javascript");
 
 	$full_path = elgg_get_plugins_path() . "labs/views/{$viewtype}/{$type}/" . $path;
+
 	include_once($full_path);
 
 	return TRUE;
