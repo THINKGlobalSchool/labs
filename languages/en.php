@@ -12,6 +12,7 @@
 
 $english = array(
 	'labs' => 'Labs',
+	'admin:statistics:labs' => 'Labs',
 
 	// Feature strings
 	'coolfeature:label:showmessage' => 'Show a message',
@@ -22,6 +23,13 @@ $english = array(
 	// Labels
 	'labs:yes' => 'Yes',
 	'labs:no' => 'No',
+
+	// Stats
+	'labs:stats:overview' => 'Overview',
+	'labs:stats:byuser' => 'Views by user',
+	'labs:stats:totalviews' => 'Total Views',
+	'labs:stats:uniqueviews' => 'Unique Views',
+	'labs:stats:noviews' => 'No Views',
 
 	// Admin
 	'labs:admin:general_settings' => 'General Settings',

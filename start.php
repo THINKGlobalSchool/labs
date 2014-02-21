@@ -56,6 +56,9 @@ function labs_init() {
 		));
 	}
 	
+	// Register admin menu items
+	elgg_register_admin_menu_item('administer', 'labs', 'statistics');
+
 	// Whitelist other ajax views
 	elgg_register_ajax_view('labs/lab_list');
 

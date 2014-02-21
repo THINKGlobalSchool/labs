@@ -12,7 +12,9 @@
 
 global $CONFIG;
 
-$sort_by = elgg_extract('sort_by', 'text');
+labs_track();
+
+$sort_by = elgg_extract('sort_by', $vars, 'text');
 
 if (isset($CONFIG->menus['labs'])) {
 	$menu = $CONFIG->menus['labs'];

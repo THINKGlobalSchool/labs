@@ -11,3 +11,14 @@
  * This file should only contain helpers for the labs plugin itself.
  * Individual labs should have their own seperate folder.
  */
+
+/**
+ * Super simple usage tracking
+ */
+function labs_track() {
+	// Get plugin
+	$plugin = elgg_get_plugin_from_id('labs');
+
+	// Create 'opened' annotation
+	create_annotation($plugin->guid, "labs_opened", "1", "integer", elgg_get_logged_in_user_guid(), ACCESS_PRIVATE);
+}
