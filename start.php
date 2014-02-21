@@ -44,8 +44,8 @@ function labs_init() {
 	// Register main page handler
 	elgg_register_page_handler('labs', 'labs_page_handler');
 
-	// Register topbar item
-	if (elgg_is_logged_in()) {
+	// Register topbar item if enabled
+	if (elgg_is_logged_in() && elgg_get_plugin_setting('enable_labs_menu_item', 'labs')) {
 		elgg_register_menu_item('topbar', array(
 			'name' => 'labs',
 			'href' => '#',
@@ -95,12 +95,12 @@ function coolfeature_init() {
 	elgg_register_ajax_view('coolfeature/user');
 
 	// Register labs menu item
-	elgg_register_menu_item('labs', array(
-		'name' => 'coolfeature',
-		'href' => 'labs/coolfeature',
-		'text' => "Cool Feature",
-		'desc' => 'Just a test feature'
-	));
+	// elgg_register_menu_item('labs', array(
+	// 	'name' => 'coolfeature',
+	// 	'href' => 'labs/coolfeature',
+	// 	'text' => "Cool Feature",
+	// 	'desc' => 'Just a test feature'
+	// ));
 }
 
 // Requirejs init handler
@@ -186,13 +186,13 @@ function todobackbone_init() {
 	elgg_extend_view('css/elgg', 'css/todobackbone/css');
 
 	// Add a menu item
-	elgg_register_menu_item('labs', array(
-		'name' => 'backbonetodo',
-		'href' => '#/todos',
-		'text' => "Backbone Todos",
-		'desc' => 'The obligatory todo test app!',
-		'class' => 'todo-test-item'
-	));
+	// elgg_register_menu_item('labs', array(
+	// 	'name' => 'backbonetodo',
+	// 	'href' => '#/todos',
+	// 	'text' => "Backbone Todos",
+	// 	'desc' => 'The obligatory todo test app!',
+	// 	'class' => 'todo-test-item'
+	// ));
 
 	backbone_whitelist_templates(elgg_get_plugins_path() . 'labs/views/default/todobackbone/templates/');
 }

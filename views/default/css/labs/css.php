@@ -56,7 +56,7 @@
 
 
 #labs-app > #header {
-
+	padding: 10px;
 }
 
 #labs-app > #header h1 {
@@ -69,11 +69,24 @@
     text-transform: none;
 }
 
+#labs-app > #header p {
+	color: #FFFFFF;
+	padding-top: 10px;
+	border-top: 1px dotted #555;
+	margin-top: 10px;
+}
+
+#labs-app > #blurb {
+	color: #FFFFFF;
+	box-shadow: 0 0 14px #222222;
+	margin-top: 10px;
+	padding: 10px;
+}
+
 #labs-app > #main {
 	background: none repeat scroll 0 0 #FFFFFF;
-    box-shadow: 0 0 14px #222222;
-    margin-top: 10px;
-    padding: 10px;
+	box-shadow: 0 0 14px #222222;
+	padding: 10px;
 }
 
 #labs-app > #main ul#labs-list li {
@@ -97,6 +110,18 @@
 }
 
 #labs-app > #footer {
+    box-shadow: 0 4px 10px #222222;
+    color: #000000;
+    padding: 5px 10px;
+} 
+
+#labs-app > #footer a {
+	color: #FFF;
+	cursor: pointer;
+	height:18px;
+}
+
+#labs-app .gradient {
 	/* Firefox v3.6+ */
 	background-image:-moz-linear-gradient(50% 0% -180deg,rgb(55,72,79) 0%,rgb(29,40,45) 100%); 
 	/* safari v4.0+ and by Chrome v3.0+ */
@@ -108,16 +133,7 @@
 	/* IE v10+ */
 	background-image:-ms-linear-gradient(-180deg,rgb(55,72,79) 0%,rgb(29,40,45) 100%);
 	background-image:linear-gradient(-180deg,rgb(55,72,79) 0%,rgb(29,40,45) 100%);
-	height:18px;
 	-ms-filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr=#ff37484f,endColorstr=#ff1d282d,GradientType=0)";
 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#ff37484f,endColorstr=#ff1d282d,GradientType=0);
 
-    box-shadow: 0 4px 10px #222222;
-    color: #000000;
-    padding: 5px 10px;
-} 
-
-#labs-app > #footer a {
-	color: #FFF;
-	cursor: pointer;
 }

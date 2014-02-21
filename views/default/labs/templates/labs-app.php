@@ -11,8 +11,11 @@
  */
 ?>
 <section id="labs-app">
-	<header id="header">
+	<header id="header" class="gradient">
 		<h1>Spot Labs</h1>
+		<p>
+			Welcome to Spot Labs! Here we will be showcasing experimental new features. New features wil be listed below. Check them out and send us feedback via the feedback tab!
+		</p>
 	</header>
 	<section id="main">
 		<ul id='labs-list'>
@@ -20,7 +23,7 @@
 		<section id="lab-app-container"> <!-- Re-usable app container -->
 		</section>
 	</section>
-	<section id="footer">
+	<section id="footer" class="gradient">
 		<a id="show-body">Back to Spot</a>
 	</section>
 </section>

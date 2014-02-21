@@ -19,6 +19,15 @@ $english = array(
 	'coolfeature:label:viewdefault' => 'Get default view',
 	'coolfeature:label:viewjson' => 'Get JSON via View',
 
+	// Labels
+	'labs:yes' => 'Yes',
+	'labs:no' => 'No',
+
+	// Admin
+	'labs:admin:general_settings' => 'General Settings',
+	'labs:admin:enable_labs_menu_item_label' => 'Enable labs topbar menu item',
+
+	// Messages
 	'coolfeature:success:message' => 'Yesterday I did not know how to eat gagh. This should be interesting.',
 );
 

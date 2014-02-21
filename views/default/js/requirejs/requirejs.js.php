@@ -17,7 +17,7 @@ elgg.provide('elgg.requirejs');
 elgg.requirejs.init = function() {
 	require(['requirejs/test'], function(test) {
 		// Test out the modules showAlert function
-		test.showAlert('Greetings from require test module!');
+		//test.showAlert('Greetings from require test module!');
 	});
 }
 
