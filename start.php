@@ -5,8 +5,8 @@
  * @package SpotLabs
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
  * @author Jeff Tilson
- * @copyright THINK Global School 2010 - 2013
- * @link http://www.thinkglobalschool.com/
+ * @copyright THINK Global School 2010 - 2015
+ * @link http://www.thinkglobalschool.org/
  * 
  * See README for naming conventions
  */
@@ -14,14 +14,11 @@
 // Main init
 elgg_register_event_handler('init', 'system', 'labs_init', 999);
 
-// Requirejs lab
-elgg_register_event_handler('init', 'system', 'requirejs_init');
-
 // Backbone lab init
-elgg_register_event_handler('init', 'system', 'backbone_init', 501); // Dependant on requirejs lab
+elgg_register_event_handler('init', 'system', 'backbone_init', 501);
 
 // Coolfeature (example) init
-elgg_register_event_handler('init', 'system', 'coolfeature_init');
+//elgg_register_event_handler('init', 'system', 'coolfeature_init');
 
 // Todo (backbone example) init 
 elgg_register_event_handler('init', 'system', 'todobackbone_init');
@@ -97,51 +94,13 @@ function coolfeature_init() {
 	// Register example ajax view
 	elgg_register_ajax_view('coolfeature/user');
 
-	// Register labs menu item
-	// elgg_register_menu_item('labs', array(
-	// 	'name' => 'coolfeature',
-	// 	'href' => 'labs/coolfeature',
-	// 	'text' => "Cool Feature",
-	// 	'desc' => 'Just a test feature'
-	// ));
-}
-
-// Requirejs init handler
-function requirejs_init() {
-	// Register new jquery (for AMD)
-	elgg_unregister_js('jquery');
-	elgg_register_js('jquery', elgg_get_site_url() . 'mod/labs/vendors/requirejs/jquery-1.7.min.js', 'head');
-	elgg_load_js('jquery');
-
-	// Register library
-	elgg_register_library('elgg:requirejs', elgg_get_plugins_path() . 'labs/lib/requirejs/require.php');
-	elgg_load_library('elgg:requirejs');
-
-	// Register requirejs test lib
-	$js = elgg_get_simplecache_url('js', 'requirejs/requirejs.js');
-	elgg_register_simplecache_view('js/requirejs/requirejs.js');
-	elgg_register_js('elgg.requirejs', $js);
-	elgg_load_js('elgg.requirejs');
-
-	// Use this to manually include test module on page load
-	//elgg_require_js('requirejs/test');
-
-	// Register js page handler
-	elgg_register_page_handler('requirejs', 'requirejs_page_handler');
-
-	// Extend footer
-	elgg_extend_view('page/elements/foot', 'requirejs/foot');
-
-	// Register simplecache views
-	elgg_register_simplecache_view('js/requirejs/require_config');
-	elgg_register_simplecache_view('js/requirejs/text.js');
-
-	// Register require JS
-	elgg_register_js('elgg.requirejs.require_config', elgg_get_simplecache_url('js', 'requirejs/require_config'), 'head');
-	elgg_register_js('elgg.requirejs.require', '/mod/labs/vendors/requirejs/require-2.1.4.min.js', 'head');
-
-	elgg_load_js('elgg.requirejs.require_config');
-	elgg_load_js('elgg.requirejs.require');
+	//Register labs menu item
+	elgg_register_menu_item('labs', array(
+		'name' => 'coolfeature',
+		'href' => 'labs/coolfeature',
+		'text' => "Cool Feature",
+		'desc' => 'Just a test feature'
+	));
 }
 
 // Backbone init handler
@@ -151,30 +110,30 @@ function backbone_init() {
 	elgg_load_library('elgg:backbone');
 
 	// Register underscore with requirejs (and elgg)
-	require_register_js('underscore', array(
-		'src' => elgg_get_site_url() . 'mod/labs/vendors/backbone/underscore-min.js',
+	elgg_define_js('underscore', array(
+		'src' => 'mod/labs/vendors/backbone/underscore-min.js',
 		'location' => 'footer',
 		'exports' => '_',
 	));
 
 	// Register backbone with requirejs (and elgg)
-	require_register_js('backbone', array(
-		'src' => elgg_get_site_url() . 'mod/labs/vendors/backbone/backbone-min.js',
+	elgg_define_js('backbone', array(
+		'src' => 'mod/labs/vendors/backbone/backbone-min.js',
 		'location' => 'footer',
 		'deps' => array('jquery'),
 		'exports' => 'Backbone',
 	));
 
 	// Register localstorage for backbone
-	require_register_js('backbone-localstorage', array(
-		'src' => elgg_get_site_url() . 'mod/labs/vendors/backbone/backbone-localstorage-min.js',
+	elgg_define_js('backbone-localstorage', array(
+		'src' => 'mod/labs/vendors/backbone/backbone-localstorage-min.js',
 		'location' => 'footer',
 		'deps' => array('backbone'),
 	));
 
 	// Use the following to load underscore/backbone modules on page load
-	// elgg_require_js('underscore');
-	// elgg_require_js('backbone');
+	elgg_require_js('underscore');
+	elgg_require_js('backbone');
 }
 
 // Backbone todo example app init
@@ -188,13 +147,13 @@ function todobackbone_init() {
 	// Extend Main CSS
 	elgg_extend_view('css/elgg', 'css/todobackbone/css');
 
-	// Add a menu item
+	// // Add a menu item
 	// elgg_register_menu_item('labs', array(
 	// 	'name' => 'backbonetodo',
 	// 	'href' => '#/todos',
 	// 	'text' => "Backbone Todos",
 	// 	'desc' => 'The obligatory todo test app!',
-	// 	'class' => 'todo-test-item'
+	// 	'link_class' => 'todo-test-item'
 	// ));
 
 	backbone_whitelist_templates(elgg_get_plugins_path() . 'labs/views/default/todobackbone/templates/');
