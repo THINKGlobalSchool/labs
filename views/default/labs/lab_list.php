@@ -37,7 +37,7 @@ foreach ($menu['default'] as $item) {
 	$menu_item['name'] = $item->getText();
 	$menu_item['href'] = $item->getHref();
 	$menu_item['desc'] = $item->desc;
-	$menu_item['link_class'] = $item->class;
+	$menu_item['link_class'] = $item->getLinkClass();
 
 	$json_menu[] = $menu_item;
 }

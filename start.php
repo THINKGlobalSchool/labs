@@ -147,14 +147,14 @@ function todobackbone_init() {
 	// Extend Main CSS
 	elgg_extend_view('css/elgg', 'css/todobackbone/css');
 
-	// // Add a menu item
-	// elgg_register_menu_item('labs', array(
-	// 	'name' => 'backbonetodo',
-	// 	'href' => '#/todos',
-	// 	'text' => "Backbone Todos",
-	// 	'desc' => 'The obligatory todo test app!',
-	// 	'link_class' => 'todo-test-item'
-	// ));
+	// Add a menu item
+	elgg_register_menu_item('labs', array(
+		'name' => 'backbonetodo',
+		'href' => '#/todos',
+		'text' => "Backbone Todos",
+		'desc' => 'The obligatory todo test app!',
+		'link_class' => 'todo-test-item'
+	));
 
 	backbone_whitelist_templates(elgg_get_plugins_path() . 'labs/views/default/todobackbone/templates/');
 }
@@ -229,27 +229,4 @@ function coolfeature_page_handler($hook, $type, $content, $page) {
 		$body = elgg_view_layout($params['layout'], $params);
 		return elgg_view_page($params['title'], $body);
 	}
-}
-
-/**
- * Requirejs page handler (serves JS files as required)
- *
- * @param array $page The pages array
- * @return bool
- */
-function requirejs_page_handler($page) {
-	$lastcache = array_shift($page);
-	$viewtype = array_shift($page);
-	$type = array_shift($page);
-
-	$path = implode('/', $page);
-
-	header("Content-type: text/javascript");
-
-	$full_path = elgg_get_plugins_path() . "labs/views/{$viewtype}/{$type}/" . $path;
-
-	include_once($full_path);
-
-	return TRUE;
-
 }
